@@ -9,7 +9,11 @@ class GoalListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Goals')),
+      appBar: AppBar(
+        title: const Text('Goals'),
+        backgroundColor: Colors.blue,
+        elevation: 0,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -20,16 +24,51 @@ class GoalListPage extends StatelessWidget {
                 valueListenable: Hive.box<Goal>('goalBox').listenable(),
                 builder: (context, box, _) {
                   var goals = box.values.toList().cast<Goal>();
-                  return ListView.builder(
-                    itemCount: goals.length,
-                    itemBuilder: (context, index) {
-                      var goal = goals[index];
-                      return ListTile(
-                        title: Text(goal.name),
-                        subtitle: Text('Target: \$${goal.targetAmount.toStringAsFixed(2)}'),
-                      );
-                    },
-                  );
+                  return goals.isEmpty
+                      ? const Center(
+                          child: Text(
+                            'No goals added yet!',
+                            style: TextStyle(fontSize: 16, color: Colors.blue),
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: goals.length,
+                          itemBuilder: (context, index) {
+                            var goal = goals[index];
+                            return Card(
+                              elevation: 5,
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 4),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      goal.name,
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.blueAccent,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      'Target: Rp ${goal.targetAmount.toStringAsFixed(2)}',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black54,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
                 },
               ),
             ),
@@ -37,22 +76,28 @@ class GoalListPage extends StatelessWidget {
             // Form untuk menambah goal baru
             TextField(
               controller: nameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Goal Name',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             TextField(
               controller: amountController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Target Amount',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
               onPressed: () {
                 String name = nameController.text;
                 double amount = double.tryParse(amountController.text) ?? 0.0;
@@ -66,10 +111,12 @@ class GoalListPage extends StatelessWidget {
                   nameController.clear();
                   amountController.clear();
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please enter valid goal name and amount')));
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content:
+                          Text('Please enter valid goal name and amount')));
                 }
               },
-              child: Text('Add Goal'),
+              child: const Text('Add Goal'),
             ),
           ],
         ),

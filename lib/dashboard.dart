@@ -33,22 +33,35 @@ class _DashboardPageState extends State<DashboardPage> {
         saldoBox.get('saldo', defaultValue: 0.0); // Mendapatkan saldo
 
     return Scaffold(
+      backgroundColor: Colors.white, // Latar belakang putih
       appBar: AppBar(
-        title: Text('Dashboard'),
+        title: const Text('Dashboard'),
         backgroundColor: Colors.blue, // Warna biru pada AppBar
+        elevation: 0,
       ),
       body: Column(
         children: [
           // Widget untuk menampilkan saldo
           Container(
-            color: Colors.blue[100],
+            decoration: BoxDecoration(
+              color: Colors.blue[50], // Latar biru muda
+              borderRadius: BorderRadius.circular(12.0), // Radius melengkung
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.blue.withOpacity(0.2),
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
             padding: const EdgeInsets.all(16.0),
-            margin: const EdgeInsets.all(8.0),
+            margin:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  'Saldo:',
+                  'Saldo Anda:',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -56,11 +69,11 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                 ),
                 Text(
-                  '${currentSaldo.toStringAsFixed(2)}',
+                  'Rp ${currentSaldo.toStringAsFixed(2)}',
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+                    color: Colors.blueAccent,
                   ),
                 ),
               ],
@@ -75,9 +88,10 @@ class _DashboardPageState extends State<DashboardPage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex, // Menampilkan item aktif
         onTap: _onItemTapped, // Fungsi untuk navigasi halaman
-        backgroundColor: Colors.blue, // Warna biru untuk BottomNavigationBar
+        backgroundColor: Colors.white, // Warna putih untuk BottomNavigationBar
         selectedItemColor: Colors.blue, // Warna untuk item yang aktif
         unselectedItemColor: Colors.blueGrey, // Warna item yang tidak aktif
+        type: BottomNavigationBarType.fixed, // Mengatur item tetap terlihat
         elevation: 10, // Menambahkan elevasi untuk efek bayangan
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

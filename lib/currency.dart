@@ -13,12 +13,12 @@ class ExchangeCurrencyPage extends StatefulWidget {
 class _ExchangeCurrencyPageState extends State<ExchangeCurrencyPage> {
   Map<String, dynamic>? exchangeRates;
   bool isLoading = true;
-  String selectedCurrency = "USD"; // Default target currency
+  String selectedCurrency = "IDR"; // Default target currency
   double convertedSaldo = 0.0;
   double enteredAmount = 100.0; // Amount entered by user
 
   final String apiUrl =
-      "https://v6.exchangerate-api.com/v6/ad3524f930c7f32640468b77/latest/USD";
+      "https://v6.exchangerate-api.com/v6/ad3524f930c7f32640468b77/latest/IDR";
 
   @override
   void initState() {

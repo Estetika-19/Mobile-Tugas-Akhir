@@ -11,23 +11,75 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Login')),
+      backgroundColor: Colors.white, // Latar belakang putih
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center, // Tengah secara vertikal
+          crossAxisAlignment: CrossAxisAlignment.stretch, // Lebar penuh
           children: [
+            // Logo di bagian atas
+            Center(
+              child: Icon(
+                Icons.account_balance_wallet,
+                size: 100, // Ukuran ikon lebih besar
+                color: Colors.blue, // Warna ikon biru
+              ),
+            ),
+            const SizedBox(height: 32), // Jarak antara logo dan form
+            // Judul
+            const Text(
+              'Ayo Nabung',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Login to continue',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16, color: Colors.blueGrey),
+            ),
+            const SizedBox(height: 32), // Jarak dengan TextField
+            // Username Field
             TextField(
               controller: usernameController,
-              decoration: InputDecoration(labelText: 'Username'),
+              decoration: InputDecoration(
+                labelText: 'Username',
+                prefixIcon: const Icon(Icons.person, color: Colors.blue),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                  borderSide: const BorderSide(color: Colors.blue),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                ),
+              ),
             ),
+            const SizedBox(height: 16), // Jarak antar TextField
+            // Password Field
             TextField(
               controller: passwordController,
               obscureText: true,
-              decoration: InputDecoration(labelText: 'Password'),
+              decoration: InputDecoration(
+                labelText: 'Password',
+                prefixIcon: const Icon(Icons.lock, color: Colors.blue),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                  borderSide: const BorderSide(color: Colors.blue),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                ),
+              ),
             ),
+            const SizedBox(height: 32), // Jarak sebelum tombol
+            // Login Button
             ElevatedButton(
               onPressed: () {
-                // Login Logic
                 String username = usernameController.text;
                 String password = passwordController.text;
 
@@ -43,11 +95,27 @@ class LoginPage extends StatelessWidget {
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Invalid Credentials')));
+                    const SnackBar(
+                      content: Text('Invalid Credentials'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
                 }
               },
-              child: Text('Login'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+              ),
+              child: const Text(
+                'Login',
+                style: TextStyle(fontSize: 16, color: Colors.white),
+              ),
             ),
+            const SizedBox(height: 16),
+            // Register Button
             TextButton(
               onPressed: () {
                 Navigator.push(
@@ -55,7 +123,10 @@ class LoginPage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => RegisterPage()),
                 );
               },
-              child: Text('Register'),
+              child: const Text(
+                'Don\'t have an account? Register here',
+                style: TextStyle(color: Colors.blue),
+              ),
             ),
           ],
         ),

@@ -15,7 +15,7 @@ class _KonversiWaktuScreenState extends State<KonversiWaktuScreen> {
   void _konversiWaktu() {
     String input = _controller.text;
 
-    List<String> timeParts = input.split(':');
+    List<String> timeParts = input.split('.');
     if (timeParts.length != 2) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -81,7 +81,7 @@ class _KonversiWaktuScreenState extends State<KonversiWaktuScreen> {
             TextField(
               controller: _controller,
               decoration: InputDecoration(
-                labelText: 'Waktu (HH:MM)',
+                labelText: 'Waktu (HH.MM)',
                 labelStyle: const TextStyle(color: Colors.blue),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
