@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert'; // For JSON decoding
 import 'package:http/http.dart' as http;
+import 'package:hive_flutter/hive_flutter.dart';
 
 class ExchangeCurrencyPage extends StatefulWidget {
   const ExchangeCurrencyPage({Key? key}) : super(key: key);
@@ -55,58 +56,112 @@ class _ExchangeCurrencyPageState extends State<ExchangeCurrencyPage> {
     }
   }
 
+  void addSaldoToHive() {
+    final saldoBox = Hive.box('saldoBox');
+    double currentSaldo = saldoBox.get('saldo', defaultValue: 0.0);
+    saldoBox.put('saldo', currentSaldo + convertedSaldo);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Saldo sebesar ${convertedSaldo.toStringAsFixed(2)} $selectedCurrency telah ditambahkan!',
+        ),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Exchange Currency",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                  decoration: const InputDecoration(
-                    labelText: 'Enter Amount',
-                    border: OutlineInputBorder(),
+    return Scaffold(
+      backgroundColor: Colors.white, // White background
+      appBar: AppBar(
+        title: const Text(
+          "Currency Exchange",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue, // Blue AppBar
+      ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Exchange Currency",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue, // Blue text for title
+                    ),
                   ),
-                  onChanged: (value) {
-                    // Mengonversi inputan user setiap kali berubah
-                    setState(() {
-                      enteredAmount = double.tryParse(value) ?? 0.0;
-                      updateConvertedSaldo();
-                    });
-                  },
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  "Converted Amount: ${convertedSaldo.toStringAsFixed(2)} $selectedCurrency",
-                  style: const TextStyle(fontSize: 18, color: Colors.blue),
-                ),
-                const SizedBox(height: 16),
-                DropdownButton<String>(
-                  value: selectedCurrency,
-                  isExpanded: true,
-                  items: exchangeRates!.keys.map<DropdownMenuItem<String>>((String key) {
-                    return DropdownMenuItem<String>(
-                      value: key,
-                      child: Text(key),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedCurrency = value!;
-                      updateConvertedSaldo();
-                    });
-                  },
-                ),
-              ],
+                  const SizedBox(height: 16),
+                  TextField(
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    decoration: const InputDecoration(
+                      labelText: 'Enter Amount',
+                      labelStyle: TextStyle(color: Colors.blue),
+                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        enteredAmount = double.tryParse(value) ?? 0.0;
+                        updateConvertedSaldo();
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    "Converted Amount: ${convertedSaldo.toStringAsFixed(2)} $selectedCurrency",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.blue,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  DropdownButton<String>(
+                    value: selectedCurrency,
+                    isExpanded: true,
+                    dropdownColor: Colors.blue[50], // Light blue dropdown menu
+                    items: exchangeRates!.keys
+                        .map<DropdownMenuItem<String>>((String key) {
+                      return DropdownMenuItem<String>(
+                        value: key,
+                        child: Text(
+                          key,
+                          style: const TextStyle(color: Colors.blue),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedCurrency = value!;
+                        updateConvertedSaldo();
+                      });
+                    },
+                    style: const TextStyle(
+                      color: Colors.blue, // Blue text in dropdown
+                      fontSize: 16,
+                    ),
+                    icon: const Icon(Icons.arrow_drop_down, color: Colors.blue),
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: addSaldoToHive,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue, // Blue button
+                    ),
+                    child: const Text("Add to Saldo"),
+                  ),
+                ],
+              ),
             ),
-          );
+    );
   }
 }

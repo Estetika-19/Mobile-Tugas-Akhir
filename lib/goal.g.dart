@@ -1,4 +1,10 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
 part of 'goal.dart';
+
+// **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
 
 class GoalAdapter extends TypeAdapter<Goal> {
   @override
@@ -19,7 +25,7 @@ class GoalAdapter extends TypeAdapter<Goal> {
   @override
   void write(BinaryWriter writer, Goal obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(2)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)

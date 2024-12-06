@@ -6,7 +6,7 @@ part 'goal.g.dart'; // Untuk kode Hive Generator
 class Goal {
   @HiveField(0)
   final String name;
-  
+
   @HiveField(1)
   final double targetAmount;
 

@@ -13,6 +13,7 @@ void main() async {
   // Membuka box untuk User dan Goal
   await Hive.openBox('userBox'); // Box untuk menyimpan user login
   await Hive.openBox<Goal>('goalBox'); // Box untuk menyimpan goals
+  await Hive.openBox('saldoBox');
 
   runApp(MyApp());
 }

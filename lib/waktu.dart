@@ -13,34 +13,28 @@ class _KonversiWaktuScreenState extends State<KonversiWaktuScreen> {
   String _london = '';
 
   void _konversiWaktu() {
-    // Mengambil input dari TextField
     String input = _controller.text;
 
-    // Memeriksa format input menggunakan split
-    List<String> timeParts = input.split('.');
+    List<String> timeParts = input.split(':');
     if (timeParts.length != 2) {
-      // Jika format salah, tampilkan pesan error
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Format waktu harus HH.MM'),
+          content: Text('Format waktu harus HH:MM'),
           backgroundColor: Colors.red,
         ),
       );
       return;
     }
 
-    // Parsing jam dan menit
     int? jam = int.tryParse(timeParts[0]);
     int? menit = int.tryParse(timeParts[1]);
 
-    // Validasi nilai jam dan menit
     if (jam == null ||
         menit == null ||
         jam < 0 ||
         jam > 23 ||
         menit < 0 ||
         menit > 59) {
-      // Jika input tidak valid, tampilkan pesan error
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Jam harus antara 0-23 dan menit antara 0-59.'),
@@ -50,7 +44,6 @@ class _KonversiWaktuScreenState extends State<KonversiWaktuScreen> {
       return;
     }
 
-    // Format jam dan menit ke zona waktu lainnya
     setState(() {
       _wib =
           '${jam.toString().padLeft(2, '0')}:${menit.toString().padLeft(2, '0')} WIB';
@@ -58,8 +51,6 @@ class _KonversiWaktuScreenState extends State<KonversiWaktuScreen> {
           '${((jam + 1) % 24).toString().padLeft(2, '0')}:${menit.toString().padLeft(2, '0')} WITA';
       _wit =
           '${((jam + 2) % 24).toString().padLeft(2, '0')}:${menit.toString().padLeft(2, '0')} WIT';
-
-      // Konversi ke waktu London (GMT/UTC)
       _london =
           '${((jam - 7 + 24) % 24).toString().padLeft(2, '0')}:${menit.toString().padLeft(2, '0')} London (GMT)';
     });
@@ -68,26 +59,82 @@ class _KonversiWaktuScreenState extends State<KonversiWaktuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Konversi Waktu')),
+      backgroundColor: Colors.white, // Latar belakang putih
+      appBar: AppBar(
+        title: const Text('Konversi Waktu'),
+        backgroundColor: Colors.blue, // AppBar biru
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const Text(
+              'Masukkan Waktu',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue, // Warna biru pada teks judul
+              ),
+            ),
+            const SizedBox(height: 16),
             TextField(
               controller: _controller,
-              decoration: InputDecoration(labelText: 'Waktu (HH:MM)'),
+              decoration: InputDecoration(
+                labelText: 'Waktu (HH:MM)',
+                labelStyle: const TextStyle(color: Colors.blue),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.blue),
+                ),
+              ),
               keyboardType: TextInputType.number,
             ),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _konversiWaktu,
-              child: Text('Konversi'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue, // Warna biru pada tombol
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child: const Text('Konversi'),
             ),
-            if (_wib.isNotEmpty) ...[
-              Text('WIB: $_wib'),
-              Text('WITA: $_wita'),
-              Text('WIT: $_wit'),
-              Text('London: $_london'),
-            ],
+            const SizedBox(height: 24),
+            if (_wib.isNotEmpty)
+              Card(
+                elevation: 4,
+                color: Colors.blue[50], // Latar belakang kartu biru pucat
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('WIB: $_wib',
+                          style: const TextStyle(
+                              fontSize: 16, color: Colors.blue)),
+                      const Divider(),
+                      Text('WITA: $_wita',
+                          style: const TextStyle(
+                              fontSize: 16, color: Colors.blue)),
+                      const Divider(),
+                      Text('WIT: $_wit',
+                          style: const TextStyle(
+                              fontSize: 16, color: Colors.blue)),
+                      const Divider(),
+                      Text('London: $_london',
+                          style: const TextStyle(
+                              fontSize: 16, color: Colors.blue)),
+                    ],
+                  ),
+                ),
+              ),
           ],
         ),
       ),

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "673146264907",
+    "project_id": "tugas-akhir-mobile-78289",
+    "storage_bucket": "tugas-akhir-mobile-78289.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673146264907:android:29156ccc2ac64f34d69cce",
+        "android_client_info": {
+          "package_name": "com.example.ta2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKn_anhOydJ7fXnheV_FJL8AeTsDrLpVM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
